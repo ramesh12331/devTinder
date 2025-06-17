@@ -4,20 +4,28 @@ const app = express();
 
 
 // This will only handle GET call to /user
-app.get("/user",(req,res)=>{
-    res.send({firstname:"Ramesh",lastname:"mamidi"})
-})
+app.use("/user",(req,res,next)=>{
+    console.log("Handling the route use!!");
+    // res.send("response1")
+    next()
+},
+(req,res,next)=>{
+    console.log("Handling the route use!!");
+    // res.send("response2")
+    next()
+},
+(req,res,next)=>{
+    console.log("Handling the route use!!");
+    // res.send("response3")
+    next()
+},
+(req,res,next)=>{
+    console.log("Handling the route use!!");
+    res.send("response4")
+}
+)
 
-app.post("/user",(req,res)=>{
-    res.send("Send data to database Successfully!");
-})
-app.delete("/user",(req,res)=>{
-    res.send("Delete Successfully!");
-})
-// this will match all the HTTP method API calls to /test
-app.use("/test",(req,res)=>{
-    res.send("Hello World!")
-})
+
 
 
 app.listen(5000,()=>{
