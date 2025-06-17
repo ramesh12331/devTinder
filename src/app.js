@@ -1,26 +1,44 @@
 const express = require("express");
-const { adminAuth, userAuth } = require("../middlewares/auth");
+const connectDB = require("./config/database");
+const User = require("./models/user");
 
 const app = express();
 
-app.use("/",(err,req,res,next)=>{
-    if(err){
-        res.status(500).send("Something went wrong!!");
-    }
-})
+app.post("/signup",async(req,res)=>{
+    // const userObj = {
+    //     firstName : "Ramesh",
+    //     lastName  : "Mamidi",
+    //     emailId   : "ram@gmail.com",
+    //     password  : "ram@123",
 
-app.get("/getUserData",(req,res)=>{
+    // }
+    const user = new User({
+        firstName : "Akshay",
+        lastName  : "Saini",
+        emailId   : "akshay@gmail.com",
+        password  : "akshay@123",
+
+    });
+
     try {
-        throw new Error("cdfcdc");
-        res.send("User Data Send");
+        await user.save();
+        res.send("User added Successfully");
     } catch (error) {
-        res.status(500).send("Some error contact support team");
+        res.status(400).send("Error saving the user:"+error.message);
     }
-    
-})
+  
+});
 
-
-
-app.listen(5000,()=>{
+connectDB()
+.then(()=>{
+    console.log("Database connection established...");
+    app.listen(5000,()=>{
     console.log("Server is successfully listening on port 5000....");
 });
+})
+.catch((err)=>{
+    console.log("Database cannot be established...");
+})
+
+
+
