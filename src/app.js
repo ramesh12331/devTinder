@@ -1,32 +1,26 @@
 const express = require("express");
+const { adminAuth, userAuth } = require("../middlewares/auth");
 
 const app = express();
 
+app.use("/admin",adminAuth);
 
-// This will only handle GET call to /user
-app.use("/user",(req,res,next)=>{
-    console.log("Handling the route use!!");
-    // res.send("response1")
-    next()
-},
-(req,res,next)=>{
-    console.log("Handling the route use!!");
-    // res.send("response2")
-    next()
-},
-(req,res,next)=>{
-    console.log("Handling the route use!!");
-    // res.send("response3")
-    next()
-},
-(req,res,next)=>{
-    console.log("Handling the route use!!");
-    res.send("response4")
-}
-)
+app.post("/user/login",(req,res)=>{
+    res.send("User login successfully!");
+})
 
+app.get("/user",userAuth,(req,res)=>{
+    res.send("User Data Send");
+})
 
+app.get("/admin/getAllData",(req,res)=>{
+    
+    res.send("All Data Sent")
+});
 
+app.get("/admin/deleteAllData",(req,res)=>{
+    res.send("delete");
+})
 
 app.listen(5000,()=>{
     console.log("Server is successfully listening on port 5000....");
