@@ -61,6 +61,35 @@ app.get("/feed",async(req,res)=>{
     }
     
     
+});
+
+//DeleteById
+
+app.delete("/user",async(req,res)=>{
+    const userId = req.body.userId;
+    try {
+        const user = await User.findByIdAndDelete({_id:userId});
+        // const user = await User.findByIdAndDelete(userId)
+        res.send("User deleted successfully");
+    } catch (error) {
+        res.status(400).send("Something Went Wrong");
+    }
+
+});
+
+//Update data
+app.patch("/user",async(req,res)=>{
+    const userId = req.body.userId;
+    const data = req.body;
+    
+    try {
+        const user = await User.findByIdAndUpdate({_id:userId},data,{returnDocument : "before",runValidators : true});
+        console.log(user);
+        res.send("User updated Successfully");
+        
+    } catch (error) {
+        res.status(400).send("UPDATE FAILED" + error.message);
+    }
 })
 
 connectDB()
