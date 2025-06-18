@@ -6,7 +6,7 @@ const app = express();
 app.use(express.json());
 
 app.post("/signup",async(req,res)=>{
-    console.log(req.body);
+    // console.log(req.body);
     // // const userObj = {
     // //     firstName : "Ramesh",
     // //     lastName  : "Mamidi",
@@ -22,8 +22,46 @@ app.post("/signup",async(req,res)=>{
     } catch (error) {
         res.status(400).send("Error saving the user:"+error.message);
     }
-  
 });
+
+//Get user by email
+app.get("/user",async(req,res)=>{
+    const userEmail = req.body.emailId;
+    
+    try {
+
+        const user = await User.findOne({emailId:userEmail});
+        
+        if(!user){
+            res.send("User not found")
+        }else{
+            res.send(user);
+        }
+    //   const users=await User.find({emailId:userEmail});
+    //   if(users.length === 0){
+    //     res.status(404).send("Users not found")
+    //   }else{
+    //     res.send(users);
+    //   }
+      
+    } catch (error) {
+        res.status(400).send("Something went wrong");
+    }
+
+    
+});
+
+// Feed API - GET /feed - get all the users from the database
+app.get("/feed",async(req,res)=>{
+    try {
+        const users =await User.find({})
+        res.send(users)
+    } catch (error) {
+        res.status(400).send("Something Went Wrong");
+    }
+    
+    
+})
 
 connectDB()
 .then(()=>{
